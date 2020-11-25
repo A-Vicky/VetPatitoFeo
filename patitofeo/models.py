@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 class Employee(models.Model):
     first_name = models.CharField(max_length=100)
@@ -46,7 +47,7 @@ class Appointment(models.Model):
     )
     description = models.TextField()
     comments = models.TextField()
-    date = models.DateField()
+    date = models.DateTimeField(default=datetime.datetime.now)
     
     def __str__(self):
         return self.id
