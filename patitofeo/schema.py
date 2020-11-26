@@ -66,7 +66,7 @@ class NewPet(graphene.Mutation):
         age = graphene.Int(required=True)
         ownerid = graphene.Int(required=True)
         
-    def mutate(self, first_name, last_name, breed, colors, behaviour, age, ownerid):
+    def mutate(self, info, first_name, last_name, breed, colors, behaviour, age, ownerid):
         owner = Owner.objects.get(id=ownerid)
         new = Pet(first_name=first_name, last_name=last_name,breed=breed,colors=colors, behavior=behaviour,age=age,owner=owner)
         new.save()
@@ -89,7 +89,7 @@ class NewOwner(graphene.Mutation):
         email = graphene.String(required=True)
         phone = graphene.String(required=True)
         
-    def mutate(self, first_name, middle_name, first_lname, second_lname, address, email, phone):
+    def mutate(self, info, first_name, middle_name, first_lname, second_lname, address, email, phone):
         new = Owner(first_name=first_name, middle_name=middle_name,first_lname=first_lname,second_lname=second_lname, address=address,email=email,phone=phone)
         new.save()
         
@@ -108,7 +108,7 @@ class NewAppointment(graphene.Mutation):
         description = graphene.String(required=True)
         comments = graphene.String(required=True)
         
-    def mutate(self, petid, profesionalid, description, comments):
+    def mutate(self, info, petid, profesionalid, description, comments):
         pet = Pet.objects.get(id=id)
         employee = Employee.objects.get(id=id)
         new = Appointment(pet=pet,profesional=employee,description=description,comments=comments)
