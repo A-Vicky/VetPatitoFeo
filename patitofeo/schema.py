@@ -63,12 +63,12 @@ class NewPet(graphene.Mutation):
         breed = graphene.String(required=True)
         colors = graphene.String(required=True)
         behavior = graphene.String(required=True)
-        age = graphene.Int(required=True)
-        ownerid = graphene.Int(required=True)
+        age = graphene.String(required=True)
+        ownerfn = graphene.String(required=True)
         
-    def mutate(self, info, first_name, last_name, breed, colors, behaviour, age, ownerid):
-        owner = Owner.objects.get(id=ownerid)
-        new = Pet(first_name=first_name, last_name=last_name,breed=breed,colors=colors, behavior=behaviour,age=age,owner=owner)
+    def mutate(self, info, first_name, last_name, breed, colors, behavior, age, ownerfn):
+        owner = Owner.objects.get(first_name=ownerfn)
+        new = Pet(first_name=first_name, last_name=last_name,breed=breed,colors=colors, behavior=behavior,age=age,owner=owner)
         new.save()
     
         return NewPet(new=new)
@@ -103,14 +103,14 @@ class NewAppointment(graphene.Mutation):
     new = graphene.Field(AppointmentModel)
     
     class Arguments:
-        petid = graphene.Int(required=True)
-        profesionalid = graphene.Int(required=True)
+        petn = graphene.String(required=True)
+        prof = graphene.String(required=True)
         description = graphene.String(required=True)
         comments = graphene.String(required=True)
         
-    def mutate(self, info, petid, profesionalid, description, comments):
-        pet = Pet.objects.get(id=id)
-        employee = Employee.objects.get(id=id)
+    def mutate(self, info, petn, prof, description, comments):
+        pet = Pet.objects.get(first_name=petn)
+        employee = Employee.objects.get(first_name=prof)
         new = Appointment(pet=pet,profesional=employee,description=description,comments=comments)
         new.save()
         
