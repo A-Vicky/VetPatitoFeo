@@ -50,4 +50,4 @@ class Appointment(models.Model):
     date = models.DateTimeField(default=datetime.datetime.now)
     
     def __str__(self):
-        return self.id
+        return self.description

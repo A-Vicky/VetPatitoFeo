@@ -27,7 +27,29 @@ class AppointmentNode(DjangoObjectType):
         model = Appointment
         filter_fields = ['date', 'pet', 'profesional']
         interfaces = (relay.Node,)
+
+class EmployeeModel(DjangoObjectType):
+    class Meta:
+        model = Employee
+    
+class NewEmployee(graphene.Mutation):
+    new = graphene.Field(EmployeeModel)
+    
+    class Arguments:
+        firstName = graphene.String(required=True)
+        middleName = graphene.String(required=True)
+        firstLname = graphene.String(required=True)
+        secondLname = graphene.String(required=True)
+        email = graphene.String(required=True)
+        specialty = graphene.String(required=True)
         
+    def mutate(self, info, firstName, middleName, firstLname, secondLname, email, specialty):
+        
+        new = Employee(first_name=firstName, middle_name=middleName,first_lname=firstLname,second_lname=secondLname, email=email, specialty=specialty)
+        new.save()
+        
+        return NewEmployee(new=new)
+
 class PetModel(DjangoObjectType):
     class Meta:
         model = Pet
@@ -48,7 +70,7 @@ class NewPet(graphene.Mutation):
         owner = Owner.objects.get(id=ownerid)
         new = Pet(first_name=first_name, last_name=last_name,breed=breed,colors=colors, behavior=behaviour,age=age,owner=owner)
         new.save()
-        
+    
         return NewPet(new=new)
 
 class OwnerModel(DjangoObjectType):
@@ -112,4 +134,6 @@ class Mutation(graphene.ObjectType):
     
     create_owner = NewOwner.Field()
     
-    create_appointment = NewAppointment()
+    create_appointment = NewAppointment.Field()
+    
+    create_employee = NewEmployee.Field()
